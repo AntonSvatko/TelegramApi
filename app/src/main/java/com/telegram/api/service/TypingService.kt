@@ -12,11 +12,12 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.telegram.api.R
+import com.telegram.api.utils.Constants.NOTIFICATION_ID
 import inc.brody.tapi.requests.TGetChat
 import inc.brody.tapi.requests.TGetChats
 import inc.brody.tapi.requests.TSendChatAction
 import inc.brody.tapi.requests.TSetOption
-import kotlinx.coroutines.*
+import kotlinx.coroutines.SupervisorJob
 import org.drinkless.td.libcore.telegram.TdApi
 
 
@@ -29,15 +30,15 @@ class TypingService : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        GlobalScope.launch(Dispatchers.Main) {
-            while (true) {
+//        GlobalScope.launch(Dispatchers.Main) {
+//            while (true) {
                 TSetOption("online", TdApi.OptionValueBoolean(true)) {
                     Log.d("test3", "ok")
                 }
                 typing()
-                delay(10000)
-            }
-        }
+//                delay(10000)
+//            }
+//        }
     }
 
     fun typing() {
@@ -91,6 +92,14 @@ class TypingService : Service() {
             .setCategory(Notification.CATEGORY_SERVICE)
             .build()
 
-        startForeground(2, notification)
+        startForeground(NOTIFICATION_ID, notification)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) startMyOwnForeground() else startForeground(
+            1,
+            Notification()
+        )
     }
 }
