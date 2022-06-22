@@ -83,10 +83,10 @@ class TApi {
         },
             onSuccess = {
                 when (it) {
-                    is TdApi.Updates ->
-                        _authState = Session.checkAuthState(
-                            (it.updates[0]) as TdApi.UpdateAuthorizationState
-                        )
+//                    is TdApi.Updates ->
+//                        _authState = Session.checkAuthState(
+//                            (it.updates[0]) as TdApi.UpdateAuthorizationState
+//                        ) //todo
                     is TdApi.UpdateAuthorizationState -> {
                         _authState = Session.checkAuthState(it)
                     }

@@ -38,7 +38,8 @@ class TypingService : Service() {
             if (chats is TdApi.Chats) {
                 chats.chatIds.forEach {
                     TGetChat(it) {
-                        if (it is TdApi.UpdateUserChatAction)
+                        Log.d("test12", it?.javaClass?.name.toString())
+                        if (it is TdApi.UpdateChatAction)
                             if (it.action is TdApi.ChatActionTyping)
                                 TSendChatAction(it.chatId, TdApi.ChatActionTyping()) {}
 
@@ -66,6 +67,7 @@ class TypingService : Service() {
             channelName,
             NotificationManager.IMPORTANCE_NONE
         )
+
         chan.apply {
             lightColor = Color.BLUE
             lockscreenVisibility = Notification.VISIBILITY_PRIVATE

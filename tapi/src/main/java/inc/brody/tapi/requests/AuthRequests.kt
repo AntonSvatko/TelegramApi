@@ -4,15 +4,15 @@ import inc.brody.tapi.utils.Session
 import inc.brody.tapi.utils.responses.TelegramErrorResponse
 import org.drinkless.td.libcore.telegram.TdApi
 
-class TChangePhoneNumber(
-    phoneNumber: String,
-    allowFlashCall: Boolean,
-    isCurrentPhoneNumber: Boolean,
-    onError: ((TelegramErrorResponse) -> Unit)? = null,
-    onSuccess: ((TdApi.Object?) -> Unit)? = null
-) : TRequest<TdApi.ChangePhoneNumber>(
-    TdApi.ChangePhoneNumber(phoneNumber, allowFlashCall, isCurrentPhoneNumber), onError, onSuccess
-)
+//class TChangePhoneNumber(
+//    phoneNumber: String,
+//    allowFlashCall: Boolean,
+//    isCurrentPhoneNumber: Boolean,
+//    onError: ((TelegramErrorResponse) -> Unit)? = null,
+//    onSuccess: ((TdApi.Object?) -> Unit)? = null
+//) : TRequest<TdApi.ChangePhoneNumber>(
+//    TdApi.ChangePhoneNumber(phoneNumber, allowFlashCall, isCurrentPhoneNumber), onError, onSuccess
+//)
 
 class TCreateTemporaryPassword(
     password: String,
@@ -34,12 +34,12 @@ class TGetTemporaryPasswordState(
 ) : TRequest<TdApi.GetTemporaryPasswordState>
     (TdApi.GetTemporaryPasswordState(), onError, onSuccess)
 
-class TRecoverAuthenticationPassword(
-    recoveryCode: String,
-    onError: ((TelegramErrorResponse) -> Unit)? = null,
-    onSuccess: ((TdApi.Object?) -> Unit)? = null
-) : TRequest<TdApi.RecoverAuthenticationPassword>
-    (TdApi.RecoverAuthenticationPassword(recoveryCode), onError, onSuccess)
+//class TRecoverAuthenticationPassword(
+//    recoveryCode: String,
+//    onError: ((TelegramErrorResponse) -> Unit)? = null,
+//    onSuccess: ((TdApi.Object?) -> Unit)? = null
+//) : TRequest<TdApi.RecoverAuthenticationPassword>
+//    (TdApi.RecoverAuthenticationPassword(recoveryCode), onError, onSuccess)
 
 class TRecoverPassword(
     onError: ((TelegramErrorResponse) -> Unit)? = null,
@@ -109,34 +109,34 @@ class TResendPhoneNumberVerificationCode(
 ) : TRequest<TdApi.ResendPhoneNumberVerificationCode>
     (TdApi.ResendPhoneNumberVerificationCode(), onError, onSuccess)
 
-class TSendPhoneNumberConfirmationCode(
-    hash: String,
-    phoneNumber: String,
-    allowFlashCall: Boolean,
-    isCurrentPhoneNumber: Boolean,
-    onError: ((TelegramErrorResponse) -> Unit)? = null,
-    onSuccess: ((TdApi.Object?) -> Unit)? = null
-) : TRequest<TdApi.SendPhoneNumberConfirmationCode>
-    (
-    TdApi.SendPhoneNumberConfirmationCode(
-        hash, phoneNumber, allowFlashCall,
-        isCurrentPhoneNumber
-    ), onError, onSuccess
-)
+//class TSendPhoneNumberConfirmationCode(
+//    hash: String,
+//    phoneNumber: String,
+//    allowFlashCall: Boolean,
+//    isCurrentPhoneNumber: Boolean,
+//    onError: ((TelegramErrorResponse) -> Unit)? = null,
+//    onSuccess: ((TdApi.Object?) -> Unit)? = null
+//) : TRequest<TdApi.SendPhoneNumberConfirmationCode>
+//    (
+//    TdApi.SendPhoneNumberConfirmationCode(
+//        hash, phoneNumber, allowFlashCall,
+//        isCurrentPhoneNumber
+//    ), onError, onSuccess
+//)
 
-class TSendPhoneNumberVerificationCode(
-    phoneNumber: String,
-    allowFlashCall: Boolean,
-    isCurrentPhoneNumber: Boolean,
-    onError: ((TelegramErrorResponse) -> Unit)? = null,
-    onSuccess: ((TdApi.Object?) -> Unit)? = null
-) : TRequest<TdApi.SendPhoneNumberVerificationCode>
-    (
-    TdApi.SendPhoneNumberVerificationCode(
-        phoneNumber, allowFlashCall,
-        isCurrentPhoneNumber
-    ), onError, onSuccess
-)
+//class TSendPhoneNumberVerificationCode(
+//    phoneNumber: String,
+//    allowFlashCall: Boolean,
+//    isCurrentPhoneNumber: Boolean,
+//    onError: ((TelegramErrorResponse) -> Unit)? = null,
+//    onSuccess: ((TdApi.Object?) -> Unit)? = null
+//) : TRequest<TdApi.SendPhoneNumberVerificationCode>
+//    (
+//    TdApi.SendPhoneNumberVerificationCode(
+//        phoneNumber, allowFlashCall,
+//        isCurrentPhoneNumber
+//    ), onError, onSuccess
+//)
 
 class TAnswerCallbackQuery(
     callbackQueryId: Long,
@@ -154,28 +154,28 @@ class TAnswerCallbackQuery(
     ), onError, onSuccess
 )
 
-class TCreateCall(
-    userId: Int,
-    protocol: TdApi.CallProtocol,
-    onError: ((TelegramErrorResponse) -> Unit)? = null,
-    onSuccess: ((TdApi.Object?) -> Unit)? = null
-) : TRequest<TdApi.CreateCall>
-    (TdApi.CreateCall(userId, protocol), onError, onSuccess)
+//class TCreateCall(
+//    userId: Int,
+//    protocol: TdApi.CallProtocol,
+//    onError: ((TelegramErrorResponse) -> Unit)? = null,
+//    onSuccess: ((TdApi.Object?) -> Unit)? = null
+//) : TRequest<TdApi.CreateCall>
+//    (TdApi.CreateCall(userId, protocol), onError, onSuccess)
 
-class TDiscardCall(
-    callId: Int,
-    isDisconnect: Boolean,
-    duration: Int,
-    connectionId: Long,
-    onError: ((TelegramErrorResponse) -> Unit)? = null,
-    onSuccess: ((TdApi.Object?) -> Unit)? = null
-) : TRequest<TdApi.DiscardCall>
-    (
-    TdApi.DiscardCall(
-        callId, isDisconnect,
-        duration, connectionId
-    ), onError, onSuccess
-)
+//class TDiscardCall(
+//    callId: Int,
+//    isDisconnect: Boolean,
+//    duration: Int,
+//    connectionId: Long,
+//    onError: ((TelegramErrorResponse) -> Unit)? = null,
+//    onSuccess: ((TdApi.Object?) -> Unit)? = null
+//) : TRequest<TdApi.DiscardCall>
+//    (
+//    TdApi.DiscardCall(
+//        callId, isDisconnect,
+//        duration, connectionId
+//    ), onError, onSuccess
+//)
 
 class TGetCallbackQueryAnswer(
     chatId: Long,
@@ -186,14 +186,14 @@ class TGetCallbackQueryAnswer(
 ) : TRequest<TdApi.GetCallbackQueryAnswer>
     (TdApi.GetCallbackQueryAnswer(chatId, messageId, payload), onError, onSuccess)
 
-class TSendCallRating(
-    callId: Int,
-    rating: Int,
-    comment: String,
-    onError: ((TelegramErrorResponse) -> Unit)? = null,
-    onSuccess: ((TdApi.Object?) -> Unit)? = null
-) : TRequest<TdApi.SendCallRating>
-    (TdApi.SendCallRating(callId, rating, comment), onError, onSuccess)
+//class TSendCallRating(
+//    callId: Int,
+//    rating: Int,
+//    comment: String,
+//    onError: ((TelegramErrorResponse) -> Unit)? = null,
+//    onSuccess: ((TdApi.Object?) -> Unit)? = null
+//) : TRequest<TdApi.SendCallRating>
+//    (TdApi.SendCallRating(callId, rating, comment), onError, onSuccess)
 
 class TTestCallBytes(
     x: ByteArray,
@@ -254,8 +254,7 @@ class TCheckAuthenticationCode(
 ) : TRequest<TdApi.CheckAuthenticationCode>(
     TdApi
         .CheckAuthenticationCode(
-            code ?: Session.myCode,
-            "", ""
+            code ?: Session.myCode
         ), onError, onSuccess
 )
 
@@ -283,7 +282,7 @@ class TSetAuthenticationPhoneNumber(
     TdApi
         .SetAuthenticationPhoneNumber(
             phone ?: Session.myPhone,
-            false, true
+            TdApi.PhoneNumberAuthenticationSettings()
         ), onError, onSuccess
 )
 
@@ -348,28 +347,28 @@ class TGetCountryCode(
 ) : TRequest<TdApi.GetCountryCode>
     (TdApi.GetCountryCode(), onError, onSuccess)
 
-class TGetUserFullInfo(
-    userId: Int,
-    onError: ((TelegramErrorResponse) -> Unit)? = null,
-    onSuccess: ((TdApi.Object?) -> Unit)? = null
-) : TRequest<TdApi.GetUserFullInfo>
-    (TdApi.GetUserFullInfo(userId), onError, onSuccess)
-
-class TSendPaymentForm(
-    chatId: Long,
-    messageId: Long,
-    orderInfoId: String,
-    shippingOptionId: String,
-    credentials: TdApi.InputCredentials,
-    onError: ((TelegramErrorResponse) -> Unit)? = null,
-    onSuccess: ((TdApi.Object?) -> Unit)? = null
-) : TRequest<TdApi.SendPaymentForm>
-    (
-    TdApi.SendPaymentForm(
-        chatId, messageId, orderInfoId,
-        shippingOptionId, credentials
-    ), onError, onSuccess
-)
+//class TGetUserFullInfo(
+//    userId: Int,
+//    onError: ((TelegramErrorResponse) -> Unit)? = null,
+//    onSuccess: ((TdApi.Object?) -> Unit)? = null
+//) : TRequest<TdApi.GetUserFullInfo>
+//    (TdApi.GetUserFullInfo(userId), onError, onSuccess)
+//
+//class TSendPaymentForm(
+//    chatId: Long,
+//    messageId: Long,
+//    orderInfoId: String,
+//    shippingOptionId: String,
+//    credentials: TdApi.InputCredentials,
+//    onError: ((TelegramErrorResponse) -> Unit)? = null,
+//    onSuccess: ((TdApi.Object?) -> Unit)? = null
+//) : TRequest<TdApi.SendPaymentForm>
+//    (
+//    TdApi.SendPaymentForm(
+//        chatId, messageId, orderInfoId,
+//        shippingOptionId, credentials
+//    ), onError, onSuccess
+//)
 
 class TSetAlarm(
     seconds: Double,
@@ -386,13 +385,13 @@ class TGetStorageStatisticsFast(
     (TdApi.GetStorageStatisticsFast(), onError, onSuccess)
 
 
-class TRegisterDevice(
-    deviceToken: TdApi.DeviceToken,
-    otherUserIds: IntArray,
-    onError: ((TelegramErrorResponse) -> Unit)? = null,
-    onSuccess: ((TdApi.Object?) -> Unit)? = null
-) : TRequest<TdApi.RegisterDevice>
-    (TdApi.RegisterDevice(deviceToken, otherUserIds), onError, onSuccess)
+//class TRegisterDevice(
+//    deviceToken: TdApi.DeviceToken,
+//    otherUserIds: IntArray,
+//    onError: ((TelegramErrorResponse) -> Unit)? = null,
+//    onSuccess: ((TdApi.Object?) -> Unit)? = null
+//) : TRequest<TdApi.RegisterDevice>
+//    (TdApi.RegisterDevice(deviceToken, otherUserIds), onError, onSuccess)
 
 
 class TSetOption(

@@ -108,14 +108,14 @@ class TGetRemoteFile (
 ) : TRequest<TdApi.GetRemoteFile>(
     TdApi.GetRemoteFile(remoteFileId,fileType),onError,onSuccess)
 
-class TGetUserProfilePhotos (
-    userId: Int,
-    offset: Int,
-    limit: Int,
-    onError: ((TelegramErrorResponse)->Unit)? = null,
-    onSuccess: ((TdApi.Object?)->Unit)? = null
-) : TRequest<TdApi.GetUserProfilePhotos>(
-    TdApi.GetUserProfilePhotos(userId,offset,limit),onError,onSuccess)
+//class TGetUserProfilePhotos (
+//    userId: Int,
+//    offset: Int,
+//    limit: Int,
+//    onError: ((TelegramErrorResponse)->Unit)? = null,
+//    onSuccess: ((TdApi.Object?)->Unit)? = null
+//) : TRequest<TdApi.GetUserProfilePhotos>(
+//    TdApi.GetUserProfilePhotos(userId,offset,limit),onError,onSuccess)
 
 class TReadFilePart (
     fileId: Int,
@@ -135,12 +135,12 @@ class TSetFileGenerationProgress (
 ) : TRequest<TdApi.SetFileGenerationProgress>(
     TdApi.SetFileGenerationProgress(generationId,expectedSize,localPrefixSize),onError,onSuccess)
 
-class TSetProfilePhoto (
-    photo: TdApi.InputFile,
-    onError: ((TelegramErrorResponse)->Unit)? = null,
-    onSuccess: ((TdApi.Object?)->Unit)? = null
-) : TRequest<TdApi.SetProfilePhoto>(
-    TdApi.SetProfilePhoto(photo),onError,onSuccess)
+//class TSetProfilePhoto (
+//    photo: TdApi.InputFile,
+//    onError: ((TelegramErrorResponse)->Unit)? = null,
+//    onSuccess: ((TdApi.Object?)->Unit)? = null
+//) : TRequest<TdApi.SetProfilePhoto>(
+//    TdApi.SetProfilePhoto(photo),onError,onSuccess)
 
 class TUploadFile (
     file: TdApi.InputFile,

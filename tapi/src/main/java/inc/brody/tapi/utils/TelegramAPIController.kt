@@ -108,7 +108,7 @@ object TelegramAPIController {
         }
     }
 
-    private fun safeGetOptInt(value: TdApi.OptionValue): Int {
+    private fun safeGetOptInt(value: TdApi.OptionValue): Long {
         if (value is TdApi.OptionValueEmpty)
             return 0
         return (value as TdApi.OptionValueInteger).value

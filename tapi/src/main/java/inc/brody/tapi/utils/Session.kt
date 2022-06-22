@@ -19,7 +19,7 @@ object Session {
     var myPhone: String = ""
     var myCode: String = ""
     var myPassword: String = ""
-    var myId: Int = -1
+    var myId: Long = -1
 
     private var tdlibUser: TdApi.User? = null
     private val _user: TUser = TUser()

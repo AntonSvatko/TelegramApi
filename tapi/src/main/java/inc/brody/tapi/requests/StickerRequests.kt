@@ -26,16 +26,16 @@ class TClearRecentStickers (
 ) : TRequest<TdApi.ClearRecentStickers>(
     TdApi.ClearRecentStickers(isAttached),onError,onSuccess)
 
-class TCreateNewStickerSet (
-    userId: Int,
-    title: String,
-    name: String,
-    isMasks: Boolean,
-    stickers: Array<TdApi.InputSticker>,
-    onError: ((TelegramErrorResponse)->Unit)? = null,
-    onSuccess: ((TdApi.Object?)->Unit)? = null
-) : TRequest<TdApi.CreateNewStickerSet>(
-    TdApi.CreateNewStickerSet(userId,title,name,isMasks,stickers),onError,onSuccess)
+//class TCreateNewStickerSet (
+//    userId: Int,
+//    title: String,
+//    name: String,
+//    isMasks: Boolean,
+//    stickers: Array<TdApi.InputSticker>,
+//    onError: ((TelegramErrorResponse)->Unit)? = null,
+//    onSuccess: ((TdApi.Object?)->Unit)? = null
+//) : TRequest<TdApi.CreateNewStickerSet>(
+//    TdApi.CreateNewStickerSet(userId,title,name,isMasks,stickers),onError,onSuccess)
 
 class TGetArchivedStickerSets (
     isMasks: Boolean,
@@ -66,13 +66,13 @@ class TGetInstalledStickerSets (
 ) : TRequest<TdApi.GetInstalledStickerSets>(
     TdApi.GetInstalledStickerSets(isMasks),onError,onSuccess)
 
-class TSetSupergroupStickerSet (
-    supergroupId: Int,
-    stickerSetId: Long,
-    onError: ((TelegramErrorResponse)->Unit)? = null,
-    onSuccess: ((TdApi.Object?)->Unit)? = null
-) : TRequest<TdApi.SetSupergroupStickerSet>(
-    TdApi.SetSupergroupStickerSet(supergroupId,stickerSetId),onError,onSuccess)
+//class TSetSupergroupStickerSet (
+//    supergroupId: Int,
+//    stickerSetId: Long,
+//    onError: ((TelegramErrorResponse)->Unit)? = null,
+//    onSuccess: ((TdApi.Object?)->Unit)? = null
+//) : TRequest<TdApi.SetSupergroupStickerSet>(
+//    TdApi.SetSupergroupStickerSet(supergroupId,stickerSetId),onError,onSuccess)
 
 
 
@@ -158,14 +158,14 @@ class TRemoveFavoriteSticker (
 ) : TRequest<TdApi.RemoveFavoriteSticker>(
     TdApi.RemoveFavoriteSticker(sticker),onError,onSuccess)
 
-class TAddStickerToSet (
-    userId: Int,
-    name: String,
-    sticker: TdApi.InputSticker,
-    onError: ((TelegramErrorResponse)->Unit)? = null,
-    onSuccess: ((TdApi.Object?)->Unit)? = null
-) : TRequest<TdApi.AddStickerToSet>(
-    TdApi.AddStickerToSet(userId,name,sticker),onError,onSuccess)
+//class TAddStickerToSet (
+//    userId: Int,
+//    name: String,
+//    sticker: TdApi.InputSticker,
+//    onError: ((TelegramErrorResponse)->Unit)? = null,
+//    onSuccess: ((TdApi.Object?)->Unit)? = null
+//) : TRequest<TdApi.AddStickerToSet>(
+//    TdApi.AddStickerToSet(userId,name,sticker),onError,onSuccess)
 
 class TGetStickerSet(
     setId: Long,
