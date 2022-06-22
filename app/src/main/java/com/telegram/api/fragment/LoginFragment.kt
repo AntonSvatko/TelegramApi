@@ -33,10 +33,16 @@ class LoginFragment : Fragment() {
         binding.root.isVisible = false
         //Init telegram API here, we will probably need variable
         // 'telegramApi' later, so it'd be better to make it global.
-        val telegramApi = TApi.init(requireContext().applicationContext)
 
+        val telegramApi = TApi.init(requireContext().applicationContext)
+//        telegramApi.logout()
+
+        if(telegramApi.authState.value == TConstants.AUTH_OK){
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainFragment())
+        }
 
         telegramApi.authState.setOnChangeListener {
+            Log.d("test4", it.toString())
             when (it) {
                 TConstants.AUTH_WAIT_PHONE -> {
                     binding.root.isVisible = true

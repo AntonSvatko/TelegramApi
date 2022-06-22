@@ -17,41 +17,31 @@ import inc.brody.tapi.requests.TGetChat
 import inc.brody.tapi.requests.TGetChats
 import inc.brody.tapi.requests.TSendChatAction
 import inc.brody.tapi.requests.TSetOption
-import kotlinx.coroutines.SupervisorJob
 import org.drinkless.td.libcore.telegram.TdApi
 
 
 class TypingService : Service() {
-    val job = SupervisorJob()
-
     override fun onBind(p0: Intent?): IBinder? = null
 
 
     override fun onCreate() {
         super.onCreate()
 
-//        GlobalScope.launch(Dispatchers.Main) {
-//            while (true) {
-                TSetOption("online", TdApi.OptionValueBoolean(true)) {
-                    Log.d("test3", "ok")
-                }
-                typing()
-//                delay(10000)
-//            }
-//        }
+        TSetOption("online", TdApi.OptionValueBoolean(true)) {
+            Log.d("test3", "ok")
+        }
+        typing()
     }
 
-    fun typing() {
+    private fun typing() {
         TGetChats { chats ->
             if (chats is TdApi.Chats) {
                 chats.chatIds.forEach {
                     TGetChat(it) {
-                        kotlin.runCatching {
-                            it as TdApi.UpdateUserChatAction
-                            if (it.action is TdApi.ChatActionTyping) {
+                        if (it is TdApi.UpdateUserChatAction)
+                            if (it.action is TdApi.ChatActionTyping)
                                 TSendChatAction(it.chatId, TdApi.ChatActionTyping()) {}
-                            }
-                        }
+
                     }
                 }
             }
@@ -63,7 +53,6 @@ class TypingService : Service() {
             1,
             Notification()
         )
-        Log.d("test1", "laskf")
 
         return START_STICKY
     }
@@ -93,13 +82,5 @@ class TypingService : Service() {
             .build()
 
         startForeground(NOTIFICATION_ID, notification)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) startMyOwnForeground() else startForeground(
-            1,
-            Notification()
-        )
     }
 }

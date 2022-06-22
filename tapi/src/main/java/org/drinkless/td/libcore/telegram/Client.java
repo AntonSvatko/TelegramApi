@@ -1,26 +1,10 @@
-/*
- * This file is part of TD.
- *
- * TD is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * TD is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with TD.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Copyright 2014-2019 Arseny Smirnov
- *           2014-2019 Aliaksei Levin
- */
-
+//
+// Copyright Aliaksei Levin (levlam@telegram.org), Arseny Smirnov (arseny30@gmail.com) 2014-2021
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
 package org.drinkless.td.libcore.telegram;
-
-import android.util.Log;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -120,77 +104,25 @@ public final class Client implements Runnable {
     }
 
     /**
-     * Replaces handler for incoming updates from the TDLib.
-     *
-     * @param updatesHandler   Handler with onResult method which will be called for every incoming
-     *                         update from the TDLib.
-     * @param exceptionHandler Exception handler with onException method which will be called on
-     *                         exception thrown from updatesHandler, if it is null, defaultExceptionHandler will be invoked.
-     */
-    public void setUpdatesHandler(ResultHandler updatesHandler, ExceptionHandler exceptionHandler) {
-        handlers.put(0L, new Handler(updatesHandler, exceptionHandler));
-    }
-
-    /**
-     * Replaces handler for incoming updates from the TDLib. Sets empty ExceptionHandler.
-     *
-     * @param updatesHandler Handler with onResult method which will be called for every incoming
-     *                       update from the TDLib.
-     */
-    public void setUpdatesHandler(ResultHandler updatesHandler) {
-        setUpdatesHandler(updatesHandler, null);
-    }
-
-    /**
-     * Replaces default exception handler to be invoked on exceptions thrown from updatesHandler and all other ResultHandler.
-     *
-     * @param defaultExceptionHandler Default exception handler. If null Exceptions are ignored.
-     */
-    public void setDefaultExceptionHandler(Client.ExceptionHandler defaultExceptionHandler) {
-        this.defaultExceptionHandler = defaultExceptionHandler;
-    }
-
-    /**
-     * Function for benchmarking number of queries per second which can handle the TDLib, ignore it.
-     *
-     * @param query   Object representing a query to the TDLib.
-     * @param handler Result handler with onResult method which will be called with result
-     *                of the query or with TdApi.Error as parameter.
-     * @param count   Number of times to repeat the query.
-     * @throws NullPointerException if query is null.
-     */
-    public void bench(TdApi.Function query, ResultHandler handler, int count) {
-        if (query == null) {
-            throw new NullPointerException("query is null");
-        }
-
-        for (int i = 0; i < count; i++) {
-            send(query, handler);
-        }
-    }
-
-    /**
      * Overridden method from Runnable, do not call it directly.
      */
     @Override
     public void run() {
         while (!stopFlag) {
             receiveQueries(300.0 /*seconds*/);
-            //Log.d("TAudio","WTF");
         }
-        Log.d("DLTD", "Stop TDLib thread");
     }
 
     /**
      * Creates new Client.
      *
-     * @param updatesHandler          Handler for incoming updates.
-     * @param updatesExceptionHandler Handler for exceptions thrown from updatesHandler. If it is null, exceptions will be iggnored.
+     * @param updateHandler           Handler for incoming updates.
+     * @param updateExceptionHandler  Handler for exceptions thrown from updateHandler. If it is null, exceptions will be iggnored.
      * @param defaultExceptionHandler Default handler for exceptions thrown from all ResultHandler. If it is null, exceptions will be iggnored.
      * @return created Client
      */
-    public static Client create(ResultHandler updatesHandler, ExceptionHandler updatesExceptionHandler, ExceptionHandler defaultExceptionHandler) {
-        Client client = new Client(updatesHandler, updatesExceptionHandler, defaultExceptionHandler);
+    public static Client create(ResultHandler updateHandler, ExceptionHandler updateExceptionHandler, ExceptionHandler defaultExceptionHandler) {
+        Client client = new Client(updateHandler, updateExceptionHandler, defaultExceptionHandler);
         new Thread(client, "TDLib thread").start();
         return client;
     }
@@ -254,18 +186,15 @@ public final class Client implements Runnable {
      */
     public void close() {
         writeLock.lock();
-        Log.d("TAudio","WEIRD");
         try {
             if (isClientDestroyed) {
                 return;
             }
             if (!stopFlag) {
-                Log.d("TAudio","WHY");
                 send(new TdApi.Close(), null);
             }
             isClientDestroyed = true;
             while (!stopFlag) {
-                Log.d("TAudio","YIELD");
                 Thread.yield();
             }
             if (handlers.size() != 1) {
@@ -328,7 +257,9 @@ public final class Client implements Runnable {
                 message.contains("SQL logic error or missing database") ||
                 message.contains("database disk image is malformed") ||
                 message.contains("file is encrypted or is not a database") ||
-                message.contains("unsupported file format");
+                message.contains("unsupported file format") ||
+                (message.contains("Database was deleted during execution and can't be recreated") &&
+                        message.contains("PosixError : No such file or directory"));
     }
 
     private static boolean isDiskFullError(String message) {
@@ -336,9 +267,12 @@ public final class Client implements Runnable {
                 message.contains("database or disk is full");
     }
 
+    private static boolean isDiskError(String message) {
+        return message.contains("I/O error") || message.contains("Structure needs cleaning");
+    }
+
     private static boolean isExternalError(String message) {
-        return isDatabaseBrokenError(message) || isDiskFullError(message) ||
-                message.contains("I/O error");
+        return isDatabaseBrokenError(message) || isDiskFullError(message) || isDiskError(message);
     }
 
     private static final class ClientException extends RuntimeException {
@@ -376,10 +310,10 @@ public final class Client implements Runnable {
         }
     }
 
-    private Client(ResultHandler updatesHandler, ExceptionHandler updateExceptionHandler, ExceptionHandler defaultExceptionHandler) {
+    private Client(ResultHandler updateHandler, ExceptionHandler updateExceptionHandler, ExceptionHandler defaultExceptionHandler) {
         clientCount.incrementAndGet();
         nativeClientId = NativeClient.createClient();
-        handlers.put(0L, new Handler(updatesHandler, updateExceptionHandler));
+        handlers.put(0L, new Handler(updateHandler, updateExceptionHandler));
         this.defaultExceptionHandler = defaultExceptionHandler;
     }
 
@@ -401,14 +335,12 @@ public final class Client implements Runnable {
             if (object instanceof TdApi.UpdateAuthorizationState) {
                 if (((TdApi.UpdateAuthorizationState) object).authorizationState instanceof TdApi.AuthorizationStateClosed) {
                     stopFlag = true;
-                    Log.d("TAudio","CLOSESD");
                 }
             }
         } else {
             handler = handlers.remove(id);
         }
         if (handler == null) {
-            Log.e("DLTD", "Can't find handler for the result " + id + " -- ignore result");
             return;
         }
 

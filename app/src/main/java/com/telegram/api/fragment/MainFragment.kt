@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import com.telegram.api.databinding.FragmentMainBinding
 import com.telegram.api.service.TypingService
 
-class MainFragment: Fragment() {
+class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
 
     override fun onCreateView(
@@ -24,16 +24,17 @@ class MainFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         binding.switcherTyping.setOnCheckedChangeListener { compoundButton, b ->
             val intent = Intent(
                 requireContext(),
                 TypingService::class.java
             )
-            if(b){
+            if (b)
                 requireContext().startService(intent)
-            } else {
+            else
                 requireContext().stopService(intent)
-            }
+
         }
 
     }

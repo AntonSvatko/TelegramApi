@@ -1,5 +1,6 @@
 package inc.brody.tapi.utils.util
 
+import inc.brody.tapi.requests.TLogOut
 import org.drinkless.td.libcore.telegram.Client
 
 object HandlerUtil {
@@ -10,7 +11,7 @@ object HandlerUtil {
 
     fun setUpdatesHandler(updatesHandler: Client.ResultHandler) = synchronized(this){
         this.updatesHandler = updatesHandler
-        instance?.setUpdatesHandler(this.updatesHandler)
+//        instance?.setUpdatesHandler(this.updatesHandler)
     }
 
     fun setDir(dir: String) = synchronized(this){
@@ -32,5 +33,9 @@ object HandlerUtil {
             instance = local
             instance
         }
+    }
+
+    fun confirmLogout() = TLogOut {
+//        Log.d(TAG, it.toString())
     }
 }
