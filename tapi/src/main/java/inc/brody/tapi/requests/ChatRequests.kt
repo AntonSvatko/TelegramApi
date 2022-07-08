@@ -37,7 +37,7 @@ class TGetChat(
 class TGetChats(
     offsetOrder: Long = Long.MAX_VALUE,
     offsetChatId: Long = Long.MAX_VALUE,
-    limit: Int = 30,
+    limit: Int = 100,
     onError: ((TelegramErrorResponse)->Unit)? = null,
     onSuccess: ((TdApi.Object?)->Unit)? = null
 ) : TRequest<TdApi.GetChats>(TdApi.GetChats(TdApi.ChatListMain() ,limit),onError,onSuccess)

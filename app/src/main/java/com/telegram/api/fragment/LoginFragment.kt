@@ -1,18 +1,21 @@
 package com.telegram.api.fragment
 
-import android.content.Intent
+import android.content.*
+import android.content.Context.POWER_SERVICE
+import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.telegram.api.databinding.FragmentLoginBinding
-import com.telegram.api.service.TypingService
+import com.telegram.api.utils.batteryOptimization
 import inc.brody.tapi.TApi
 import inc.brody.tapi.data.appdata.TConstants
+
 
 class LoginFragment : Fragment() {
     private val TAG = "TApiMain"
@@ -28,24 +31,47 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.root.isVisible = false
-        //Init telegram API here, we will probably need variable
-        // 'telegramApi' later, so it'd be better to make it global.
+    override fun onResume() {
+        super.onResume()
+        batteryOptimization()
+    }
 
+    private fun batteryOptimization() {
+        val pm = requireContext().getSystemService(POWER_SERVICE) as PowerManager?
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (pm!!.isIgnoringBatteryOptimizations(requireContext().packageName)) {
+                startTdApi()
+            } else {
+                requireContext().batteryOptimization()
+
+                val intentFilter = IntentFilter("android.os.action.POWER_SAVE_WHITELIST_CHANGED")
+                val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+                    override fun onReceive(context: Context?, intent: Intent?) {
+                        startTdApi()
+                    }
+                }
+                requireContext().registerReceiver(broadcastReceiver, intentFilter)
+            }
+        } else {
+            startTdApi()
+        }
+    }
+
+
+    private fun startTdApi() {
         val telegramApi = TApi.init(requireContext().applicationContext)
-//        telegramApi.logout()
 
-        if(telegramApi.authState.value == TConstants.AUTH_OK){
+        if (telegramApi.authState.value == TConstants.AUTH_OK) {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainFragment())
         }
+
 
         telegramApi.authState.setOnChangeListener {
             Log.d("test4", it.toString())
             when (it) {
                 TConstants.AUTH_WAIT_PHONE -> {
-                    binding.root.isVisible = true
+                    binding.llRoot.visibility = View.VISIBLE
                     binding.btnSendCode.setOnClickListener {
                         telegramApi.sendCodeOnPhone(binding.editTextPhone.text.toString())
                     }
